@@ -45,6 +45,7 @@ def create_app(config_class=Config):
     api.init_app(app)
 
     # Terapkan CORS
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    frontend_url = os.environ.get('FRONTEND_URL') or "http://localhost:3000"
+    CORS(app, resources={r"/*": {"origins": frontend_url}})
 
     return app
