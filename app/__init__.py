@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_restful import Api, Resource
 from flask_cors import CORS
 from config import Config
+import os
 
 # Inisialisasi ekstensi di luar factory
 db = SQLAlchemy()
