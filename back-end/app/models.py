@@ -3,12 +3,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 class UserModel(db.Model):
+    # ... (kode UserModel tidak berubah) ...
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    # --- PERUBAHAN KRITIS DI SINI ---
-    # Perbesar kapasitas kolom untuk menampung hash yang lebih panjang
     password_hash = db.Column(db.String(256), nullable=False)
-    
+    # Relasi ke PredictionHistoryModel
     predictions = db.relationship('PredictionHistoryModel', backref='user', lazy=True)
 
     def set_password(self, password):
@@ -21,13 +20,17 @@ class PatchDataModel(db.Model):
     patch_id = db.Column(db.String(80), primary_key=True)
     sugar = db.Column(db.Integer, nullable=False)
     potassium = db.Column(db.Float, nullable=False)
-    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, nullable=False)
+    # --- KOLOM BARU ---
+    # owner_id akan terhubung ke tabel UserModel
+    owner_id = db.Column(db.Integer, db.ForeignKey('user_model.id'), nullable=True)
 
+# ... (kode PredictionHistoryModel tidak berubah) ...
 class PredictionHistoryModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user_model.id'), nullable=False)
-    prediction_result = db.Column(db.String(100), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    prediction_result = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Float, nullable=False)
     sugar = db.Column(db.Integer, nullable=False)
     potassium = db.Column(db.Float, nullable=False)

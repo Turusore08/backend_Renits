@@ -27,7 +27,7 @@ def create_app(config_class=Config):
     # Impor resource di sini
     from app.resources.auth import UserRegister, UserLogin
     from app.resources.prediction import PredictionResource, PatchDataResource, GetPatchDataResource, HistoryResource # <-- Tambahkan HistoryResource
-
+    from app.resources.device import DeviceProvisionResource 
     class Ping(Resource):
         def get(self):
             return {'message': 'pong!'}
@@ -40,6 +40,7 @@ def create_app(config_class=Config):
     api.add_resource(PredictionResource, '/predict')
     api.add_resource(GetPatchDataResource, '/get-patch-data/<string:patch_id>')
     api.add_resource(HistoryResource, '/history') # <-- TAMBAHKAN INI
+    api.add_resource(DeviceProvisionResource, '/devices/provision')
 
     # Inisialisasi 'api' dengan 'app'
     api.init_app(app)
