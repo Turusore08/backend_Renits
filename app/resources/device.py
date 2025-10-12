@@ -16,17 +16,18 @@ class DeviceProvisionResource(Resource):
             patch_id = args['patch_id']
             current_user_id = get_jwt_identity()
 
-            # Cek apakah patch sudah ada, jika tidak, buat baru
             patch = PatchDataModel.query.get(patch_id)
             if not patch:
-                patch = PatchDataModel(id=patch_id, owner_id=current_user_id)
+                # --- PERUBAHAN KRITIS DI SINI ---
+                # Daripada membuat dalam satu baris, kita buat objeknya
+                # lalu atur atributnya satu per satu. Ini lebih robust.
+                patch = PatchDataModel(owner_id=current_user_id)
+                patch.id = patch_id # Atur primary key secara eksplisit
                 db.session.add(patch)
             else:
-                # Pastikan pengguna yang meminta adalah pemilik patch
                 if patch.owner_id != int(current_user_id):
                     return {'message': 'Anda tidak memiliki izin untuk perangkat ini'}, 403
 
-            # Buat token dengan waktu kedaluwarsa yang sangat panjang (misal: 1 tahun)
             expires = datetime.timedelta(days=365)
             device_token = create_access_token(identity=patch_id, expires_delta=expires)
             
