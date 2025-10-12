@@ -1,8 +1,8 @@
-"""Recreate database on Linux
+"""Initial database creation on Linux
 
-Revision ID: b7a66072a115
+Revision ID: 3a3a91b827c7
 Revises: 
-Create Date: 2025-10-12 12:49:53.612809
+Create Date: 2025-10-12 12:58:52.701079
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b7a66072a115'
+revision = '3a3a91b827c7'
 down_revision = None
 branch_labels = None
 depends_on = None
