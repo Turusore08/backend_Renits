@@ -19,10 +19,13 @@ class DeviceProvisionResource(Resource):
             patch = PatchDataModel.query.get(patch_id)
             if not patch:
                 # --- PERUBAHAN KRITIS DI SINI ---
-                # Daripada membuat dalam satu baris, kita buat objeknya
-                # lalu atur atributnya satu per satu. Ini lebih robust.
-                patch = PatchDataModel(owner_id=current_user_id)
-                patch.id = patch_id # Atur primary key secara eksplisit
+                # Buat objek kosong terlebih dahulu
+                patch = PatchDataModel() 
+                
+                # Lalu, atur atributnya satu per satu. Ini lebih robust.
+                patch.id = patch_id
+                patch.owner_id = current_user_id
+                
                 db.session.add(patch)
             else:
                 if patch.owner_id != int(current_user_id):
