@@ -27,7 +27,7 @@ def create_app(config_class=Config):
 
     # Daftarkan semua resource ke API
     from app.resources.auth import UserRegister, UserLogin
-    from app.resources.prediction import PredictionResource, PatchDataResource, GetPatchDataResource
+    from app.resources.prediction import PredictionResource, PatchDataResource, GetPatchDataResource, HistoryResource
     from app.resources.device import DeviceProvisionResource # <-- PASTIKAN IMPOR INI ADA
 
     api.add_resource(UserRegister, '/register')
@@ -36,7 +36,7 @@ def create_app(config_class=Config):
     api.add_resource(PredictionResource, '/predict')
     api.add_resource(GetPatchDataResource, '/get-patch-data/<string:patch_id>')
     api.add_resource(DeviceProvisionResource, '/devices/provision') # <-- PASTIKAN PENDAFTARAN INI ADA
-
+    api.add_resource(HistoryResource, '/history')
     # Inisialisasi API dan CORS setelah semua resource terdaftar
     api.init_app(app)
     frontend_url = os.environ.get('FRONTEND_URL') or "http://localhost:3000"
